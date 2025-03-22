@@ -1,0 +1,275 @@
+$table-background-color: #f9f9f9;
+$table-border-color: #e0e0e0;
+$primary-color: #3b82f6;
+$hover-color: #1d4ed8;
+
+// Styles du conteneur de la table
+.table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre le contenu horizontalement */
+    justify-content: flex-start; /* Commence par le haut */
+    min-height: calc(100vh - 60px); /* Ajuste la hauteur pour compenser la topbar */
+    padding: 20px; /* Ajoute du padding autour de la table */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Permet le défilement horizontal si le tableau déborde */
+    margin: 0 auto; /* Centre le conteneur dans la page */
+}
+
+// Styles du titre
+h2 {
+    font-size: 1.5rem;
+    color: $primary-color;
+    margin-bottom: 20px;
+}
+
+// Styles des boutons
+button {
+    &.btn {
+        padding: 10px 15px;
+        border-radius: 4px;
+        border: none;
+        color: #fff;
+        font-weight: bold;
+        transition: background-color 0.3s, transform 0.3s;
+
+        &.btn-primary {
+            background-color: $primary-color;
+            &:hover {
+                background-color: $hover-color;
+                transform: translateY(-2px);
+            }
+        }
+
+        &.btn-danger {
+            background-color: #dc2626;
+            &:hover {
+                background-color: #b91c1c;
+            }
+        }
+    }
+}
+
+// Styles de la table
+.table {
+    width: 100%; /* Prend toute la largeur disponible */
+    max-width: 1000px; /* Limite la taille maximale */
+    border-collapse: collapse;
+
+    thead {
+        background-color: $table-background-color;
+        th {
+            padding: 12px;
+            text-align: left;
+            color: #4a5568;
+            border-bottom: 2px solid $table-border-color;
+        }
+    }
+
+    tbody {
+        tr {
+            &:nth-child(even) {
+                background-color: #f7fafc;
+            }
+
+            &:hover {
+                background-color: #edf2f7;
+            }
+
+            td {
+                padding: 12px;
+                border-bottom: 1px solid $table-border-color;
+            }
+        }
+    }
+}
+
+// Styles de la pagination
+.pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+
+    button {
+        margin: 0 10px;
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: none;
+        background-color: $primary-color;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: $hover-color;
+        }
+
+        &.disabled {
+            background-color: #e5e5e5;
+            cursor: not-allowed;
+        }
+    }
+}
+
+// Modal d'ajout et de modification
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 600px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 20px;
+  display: none;
+
+  &.open {
+    display: block;
+  }
+
+  .modal-content {
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #555;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .submit,
+    .cancel {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .submit {
+      background-color: #4caf50;
+      color: white;
+      margin-right: 10px;
+      &:hover {
+        background-color: #45a049;
+      }
+    }
+
+    .cancel {
+      background-color: #f44336;
+      color: white;
+      &:hover {
+        background-color: #e53935;
+      }
+    }
+  }
+}
+
+// Modal de confirmation de suppression
+.delete-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 500px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 20px;
+  display: none;
+
+  &.open {
+    display: block;
+  }
+
+  .modal-header {
+    font-size: 1.25rem;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+  }
+
+  .modal-body {
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    .submit {
+      background-color: #dc2626;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #b91c1c;
+      }
+    }
+
+    .cancel {
+      background-color: #e5e5e5;
+      color: #333;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #cccccc;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .modal, .delete-modal {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .table-container {
+    padding: 10px;
+    overflow-x: scroll;
+  }
+}
+.pagination-button.active {
+  background-color: darken($primary-color, 10%);
+  cursor: default;
+}

@@ -1,0 +1,125 @@
+<div class="container text-center">
+  <h2>Liste des départements</h2>
+
+  <!-- Bouton pour ouvrir la modal Ajouter -->
+  <button class="btn btn-primary mb-3" (click)="openAddModal()">
+    <i class="fas fa-plus-circle"></i> Ajouter un département
+  </button>
+
+  <!-- Tableau des départements -->
+  <table class="table table-bordered table-hover table-striped mt-3 mx-auto">
+    <thead class="thead-light">
+      <tr>
+        <th>Nom</th>
+        <th>Responsable</th>
+        <th>Email</th>
+        <th>Nombre d'employés</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let department of departmentList">
+        <td>{{ department.nom }}</td>
+        <td>{{ department.headOfDepName }}</td>
+        <td>{{ department.email }}</td>
+        <td>{{ department.nbEmployes }}</td>
+        <td>
+          <!-- Bouton pour ouvrir la modal Modifier -->
+          <td>
+            <!-- Bouton pour ouvrir la modal Modifier -->
+            <button class="btn btn-primary btn-sm" (click)="openEditModal(department)">
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="openDeleteConfirmationModal(department)">
+              <i class="fas fa-trash-alt"></i> Supprimer
+            </button>
+            
+          </td>
+          
+         
+    
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+    {{ errorMessage }}
+  </div>
+
+  <div class="pagination-container flex items-center justify-between py-2 px-4 bg-white shadow-md rounded-lg">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">Previous</button>
+    <span class="text-gray-700">Page {{ currentPage }} sur {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">Next</button>
+  </div>
+</div>
+
+
+ <!-- Modal Ajouter Département -->
+<div *ngIf="isAddModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeAddModal()">&times;</span>
+    <h2 class="modal-title">Ajouter un département</h2>
+
+    <label for="DepartmentName">Nom du département:</label>
+    <input id="DepartmentName" type="text" placeholder="Entrer le nom du département" class="modal-input"
+           [(ngModel)]="selectedDepartment.nom" /> <!-- Liaison ici -->
+
+    <label for="HeadOfDep">Responsable:</label>
+    <input id="HeadOfDep" type="text" placeholder="Entrer le responsable" class="modal-input"
+           [(ngModel)]="selectedDepartment.headOfDepName" /> <!-- Liaison ici -->
+
+    <label for="Email">Email:</label>
+    <input id="Email" type="email" placeholder="Entrer l'email" class="modal-input"
+           [(ngModel)]="selectedDepartment.email" /> <!-- Liaison ici -->
+
+    <label for="NombreEmployee">Nombre d'employés:</label>
+    <input id="NombreEmployee" type="number" placeholder="Entrer le nombre d'employés" class="modal-input"
+           [(ngModel)]="selectedDepartment.nbEmployes" /> <!-- Liaison ici -->
+
+    <button class="btn btn-success" (click)="onSubmit()">Enregistrer</button>
+    <button class="btn btn-secondary" (click)="closeAddModal()">Annuler</button>
+  </div>
+</div>
+
+
+  <!-- Modal Modifier Département -->
+<div *ngIf="isEditModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeEditModal()">&times;</span>
+    <h2 class="modal-title">Modifier Département</h2>
+
+    <label for="DepartmentName">Nom du département:</label>
+    <input id="DepartmentName" type="text" 
+           [(ngModel)]="selectedDepartment.nom" class="modal-input" />
+
+    <label for="HeadOfDep">Responsable:</label>
+    <input id="HeadOfDep" type="text" 
+           [(ngModel)]="selectedDepartment.headOfDepName" class="modal-input" />
+
+    <label for="Email">Email:</label>
+    <input id="Email" type="email" 
+           [(ngModel)]="selectedDepartment.email" class="modal-input" />
+
+    <label for="NombreEmployee">Nombre d'employés:</label>
+    <input id="NombreEmployee" type="number" 
+           [(ngModel)]="selectedDepartment.nbEmployes" class="modal-input" />
+
+    <button class="btn btn-success" (click)="onSubmit()">Enregistrer</button>
+    <button class="btn btn-secondary" (click)="closeEditModal()">Annuler</button>
+  </div>
+</div>
+
+
+
+<!-- Modal Confirmation Suppression -->
+<div *ngIf="isDeleteConfirmationModalOpen" class="modal">
+  <div class="modal-content">
+    <h3>Êtes-vous sûr de vouloir supprimer ce département ?</h3>
+    <button class="btn btn-danger" (click)="onDeleteDepartement(selectedDepartment.id)">Confirmer</button>
+    <button class="btn btn-secondary" (click)="closeDeleteConfirmationModal()">Annuler</button>
+  </div>
+</div>
+

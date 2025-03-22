@@ -1,0 +1,87 @@
+<app-topbar></app-topbar>
+<app-sidebar></app-sidebar>
+<div class="container text-center">
+  <h2>Liste des contrats</h2>
+
+  <!-- Bouton pour ouvrir la modal Ajouter -->
+  <button class="btn btn-primary mb-3" (click)="openAddModal()">
+    <i class="fas fa-plus-circle"></i> Ajouter un contrat
+  </button>
+  
+
+
+  <!-- Tableau des contrats -->
+  <table class="table table-bordered table-hover table-striped mt-3 mx-auto">
+    <thead class="thead-light">
+      <tr>
+        <th>Type de contrat</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let contrat of departmentList">
+        <td>{{ contrat.type }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openEditModal(contrat)">
+            <i class="fas fa-edit"></i> Modifier
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="openDeleteConfirmationModal(contrat)">
+            <i class="fas fa-trash-alt"></i> Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Affichage des messages d'erreur -->
+  <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container flex items-center justify-between py-2 px-4 bg-white shadow-md rounded-lg">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">Previous</button>
+    <span class="text-gray-700">Page {{ currentPage }} sur {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">Next</button>
+  </div>
+</div>
+
+<!-- Modal Ajouter Contrat -->
+<div *ngIf="isAddModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeAddModal()">&times;</span>
+    <h2 class="modal-title">Ajouter un contrat</h2>
+
+    <label for="contractType">Type de contrat:</label>
+    <input id="contractType" type="text" [(ngModel)]="newContract.type" placeholder="Entrer le type du contrat" class="modal-input" />
+    <button class="btn btn-blue" (click)="onAddContract()">Enregistrer</button>
+
+    <!-- <button class="btn btn-success" (click)="onAddContract()">Enregistrer</button> -->
+    <button class="btn btn-secondary" (click)="closeAddModal()">Annuler</button>
+  </div>
+</div>
+
+<!-- Modal Modifier Contrat -->
+<div *ngIf="isEditModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeEditModal()">&times;</span>
+    <h2 class="modal-title">Modifier contrat</h2>
+
+    <label for="editContractType">Type de contrat:</label>
+    <input id="editContractType" type="text" [(ngModel)]="newContract.type" class="modal-input" />
+
+    <button class="btn btn-blue" (click)="onSubmit()">Enregistrer</button>
+    <button class="btn btn-secondary" (click)="closeEditModal()">Annuler</button>
+  </div>
+</div>
+
+<!-- Modal Confirmation Suppression -->
+<div *ngIf="isDeleteConfirmationModalOpen" class="modal">
+  <div class="modal-content">
+    <h3>Êtes-vous sûr de vouloir supprimer ce contrat ?</h3>
+    <button class="btn btn-danger" (click)="confirmDelete()">Confirmer</button>
+    <button class="btn btn-secondary" (click)="isDeleteConfirmationModalOpen = false">Annuler</button>
+  </div>
+</div>

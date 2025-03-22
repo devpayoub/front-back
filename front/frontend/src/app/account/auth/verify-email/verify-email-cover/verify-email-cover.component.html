@@ -1,0 +1,31 @@
+<div class="flex items-center justify-center min-h-screen py-16 bg-cover bg-auth-pattern dark:bg-auth-pattern-dark dark:text-zink-100 font-public">
+    <div class="mb-0 border-none lg:w-[500px] card bg-white/70 shadow-none dark:bg-zink-500/70">
+      <div class="!px-10 !py-12 card-body">
+        <a href="index">
+          <img src="assets/images/think-trend-largeur.png" alt="" style="display: block; margin: 0 auto; height: 200px;">
+        </a>
+  
+        <div class="mt-8 text-center">
+          <h4 class="mb-2 text-purple-500 dark:text-purple-500">Verify Your Email</h4>
+          <p class="text-slate-500 dark:text-zink-200">We've sent a verification code to <strong>{{ email }}</strong>.</p>
+        </div>
+  
+        <form (submit)="onSubmitVerificationCode(verificationCode.value, $event)" class="mt-10">
+            <div class="mb-3">
+                <div *ngIf="successMessage" class="text-green-500 text-center mt-4">
+                    {{ successMessage }}
+                  </div>
+                  <div *ngIf="successMessage" class="text-red-500 text-center mt-4">
+                    {{ errorMessage }}
+                  </div>
+                  
+            <label for="verificationCode" class="inline-block mb-2 text-base font-medium">Verification Code</label>
+            <input #verificationCode type="text" id="verificationCode" class="form-input dark:bg-zink-600/50 border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200" placeholder="Enter verification code">
+          </div>
+          <div class="mt-10">
+            <button type="submit" class="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

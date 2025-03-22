@@ -1,0 +1,247 @@
+<div class="container text-center">
+  <h2>Liste des employés</h2>
+
+  <button class="btn btn-primary mb-3" (click)="openModal()">
+    <i class="fas fa-plus-circle"></i> Ajouter un employé
+  </button>
+
+
+  <table class="table table-bordered table-hover table-striped mt-3 mx-auto">
+    <thead class="thead-light">
+      <tr>
+        <th>CIN</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Date d'entrée</th>
+        <th>Localisation</th>
+        <th>Téléphone</th>
+        <th>Département</th>
+        <th>Poste</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employes">
+        <td>{{ employee.cin }}</td>
+        <td>{{ employee.nom }}</td>
+        <td>{{ employee.prenom }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.joiningDate | date: 'dd/MM/yyyy' }}</td>
+
+        <td>{{ employee.location }}</td>
+        <td>{{ employee.phone }}</td>
+        <td>{{ employee.departement?.nom }}</td>
+        <td>{{ employee.poste?.nom }}</td>
+
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openEditModal(employee)">
+            <i class="fas fa-edit"></i> Modifier
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="openDeleteModal(employee.id)">
+            <i class="fas fa-trash-alt"></i> Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination-container">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">Précédent</button>
+    <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">Suivant</button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+</div>
+
+<!-- Modal HTML -->
+
+<div *ngIf="showModal" class="modal-container">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Ajouter un employé</h3>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="createEmployee()">
+          <div class="form-group">
+            <div class="form-group">
+              <label for="cin">CIN :</label>
+              <input
+                type="text"
+                id="cin"
+                [(ngModel)]="newEmployee.cin"
+                name="cin"
+                required
+                class="form-control"
+                minlength="8"
+                maxlength="8"
+                pattern="^\d{8}$"
+              />
+              <div *ngIf="!isCinValid() && newEmployee.cin" class="error-message">
+                Le CIN doit comporter exactement 8 chiffres.
+              </div>
+            </div>
+            
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="email">Email :</label>
+            <input type="email" id="email" [(ngModel)]="newEmployee.email" name="email" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="phone">Téléphone :</label>
+            <input type="tel" id="phone" [(ngModel)]="newEmployee.phone" name="phone" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="location">Localisation :</label>
+            <input type="text" id="location" [(ngModel)]="newEmployee.location" name="location" required
+              class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="joiningDate">Date d'entrée :</label>
+            <input type="date" id="joiningDate" [(ngModel)]="newEmployee.joiningDate" name="joiningDate" required
+              class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="departement">Département :</label>
+            <select id="departement" [(ngModel)]="newEmployee.departement" name="departement" required class="form-control">
+              <option *ngFor="let dep of departements" [ngValue]="dep">{{ dep.nom }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="poste">Poste :</label>
+            <select id="poste" [(ngModel)]="newEmployee.poste" name="poste" required class="form-control">
+              <option *ngFor="let poste of postes" [ngValue]="poste">{{ poste.nom }}</option>
+            </select>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Ajouter</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal HTML pour la modification -->
+<div *ngIf="showEditModal" class="modal-container">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Modifier un employé</h3>
+        <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="updateEmployee()">
+          <div class="form-group">
+            <label for="cin">CIN :</label>
+            <input
+              type="text"
+              id="cin"
+              [(ngModel)]="newEmployee.cin"
+              name="cin"
+              required
+              class="form-control"
+              minlength="8"
+              maxlength="8"
+              pattern="^\d{8}$"
+            />
+            <div *ngIf="!isCinValid() && newEmployee.cin" class="error-message">
+              Le CIN doit comporter exactement 8 chiffres.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="prenom">Prénom :</label>
+            <input type="text" id="prenom" [(ngModel)]="newEmployee.prenom" name="prenom" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" [(ngModel)]="newEmployee.nom" name="nom" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="email">Email :</label>
+            <input type="email" id="email" [(ngModel)]="newEmployee.email" name="email" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="phone">Téléphone :</label>
+            <input type="tel" id="phone" [(ngModel)]="newEmployee.phone" name="phone" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="location">Localisation :</label>
+            <input type="text" id="location" [(ngModel)]="newEmployee.location" name="location" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="joiningDate">Date d'entrée :</label>
+            <input type="date" id="joiningDate" [(ngModel)]="newEmployee.joiningDate" name="joiningDate" required class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="departement">Département :</label>
+            <select id="departement" [(ngModel)]="newEmployee.departement" name="departement" required class="form-control">
+              <option *ngFor="let dep of departements" [ngValue]="dep">{{ dep.nom }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="poste">Poste :</label>
+            <select id="poste" [(ngModel)]="newEmployee.poste" name="poste" required class="form-control">
+              <option *ngFor="let poste of postes" [ngValue]="poste">{{ poste.nom }}</option>
+            </select>
+          </div>
+        
+          
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Modifier</button>
+            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de suppression -->
+<!-- <div *ngIf="showDeleteModal" class="modal-container">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Confirmation de suppression</h3>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer cet employé ?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" (click)="confirmDeleteEmployee()">Supprimer</button>
+        <button class="btn btn-secondary" (click)="closeDeleteModal()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div *ngIf="showDeleteModal" class="modal-container">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Confirmation de suppression</h3>
+        <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer cet employé ?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" (click)="confirmDeleteEmployee()">Supprimer</button>
+        <button class="btn btn-secondary" (click)="closeDeleteModal()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

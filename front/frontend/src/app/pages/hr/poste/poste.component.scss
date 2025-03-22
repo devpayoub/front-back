@@ -1,0 +1,155 @@
+.container {
+  margin: 20px auto;
+  max-width: 1200px; /* Limiter la largeur du conteneur */
+  padding: 20px;
+  display: flex; /* Activer le flexbox */
+  flex-direction: column; /* Disposer les éléments en colonne */
+  align-items: center; /* Centrer les éléments horizontalement */
+}
+
+.table {
+  width: 100%; /* Utiliser toute la largeur du conteneur */
+  max-width: 900px; /* Limiter la largeur maximale du tableau */
+  margin-bottom: rem;
+  color: #212529; /* Couleur par défaut pour le texte */
+
+  th {
+    background-color: #f8f9fa; /* Couleur de fond des en-têtes */
+    border-bottom: 2px solid #dee2e6; /* Bordure inférieure des en-têtes */
+    text-align: left; /* Alignement du texte à gauche */
+    padding: 12px; /* Espacement interne */
+  }
+
+  td {
+    padding: 12px; /* Espacement interne */
+    border-bottom: 1px solid #dee2e6; /* Bordure inférieure des cellules */
+  }
+
+  .btn {
+    margin-right: 5px; /* Espacement entre les boutons */
+    transition: background-color 0.3s; /* Ajout d'une transition pour les boutons */
+  }
+
+  /* Bouton bleu */
+  .btn-primary {
+    background-color: #007bff; /* Couleur de fond bleu */
+    border: none; /* Pas de bordure */
+    color: white; /* Couleur du texte blanc */
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3; /* Couleur de fond au survol */
+  }
+
+  /* Bouton rouge pour supprimer */
+  .btn-danger {
+    background-color: #dc3545; /* Couleur de fond rouge */
+    border: none; /* Pas de bordure */
+    color: white; /* Couleur du texte blanc */
+  }
+
+  .btn-danger:hover {
+    background-color: #c82333; /* Couleur de fond au survol */
+  }
+}
+
+/* Nouveau bouton vert pour Ajouter Poste */
+.btn-success {
+  background-color: #28a745; /* Couleur de fond verte */
+  border: none; /* Pas de bordure */
+  color: white; /* Couleur du texte blanc */
+}
+
+.btn-success:hover {
+  background-color: #218838; /* Couleur de fond au survol */
+}
+
+.pagination-container {
+  margin-top: 20px; /* Espacement au-dessus de la pagination */
+  padding: 10px;
+  border: 1px solid #dee2e6; /* Bordure autour de la pagination */
+  border-radius: 5px; /* Coins arrondis */
+  background-color: #f8f9fa; /* Couleur de fond de la pagination */
+  width: 100%; /* S'assurer que la pagination prend toute la largeur */
+  max-width: 800px; /* Limiter la largeur maximale de la pagination */
+
+  .pagination-button {
+    padding: 5px 10px; /* Espacement interne des boutons de pagination */
+    border: 1px solid #007bff; /* Bordure des boutons de pagination */
+    border-radius: 4px; /* Coins arrondis */
+    background-color: #007bff; /* Couleur de fond des boutons de pagination */
+    color: white; /* Couleur du texte blanc */
+    transition: background-color 0.3s; /* Transition pour les boutons de pagination */
+
+    &:hover {
+      background-color: #0056b3; /* Couleur de fond au survol */
+    }
+
+    &.disabled {
+      cursor: not-allowed; /* Changer le curseur pour les boutons désactivés */
+      background-color: #e2e6ea; /* Couleur de fond pour les boutons désactivés */
+      color: #6c757d; /* Couleur du texte pour les boutons désactivés */
+    }
+  }
+}
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Assurer que le modal est au-dessus d'autres éléments */
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px; /* Taille maximale du modal */
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Ombre pour le modal */
+  animation: slide-down 0.3s ease; /* Animation d'apparition */
+}
+
+.modal-title {
+  margin-bottom: 20px; /* Espacement sous le titre */
+  font-size: 1.5em; /* Taille du texte */
+  color: #333; /* Couleur du texte */
+}
+
+.modal-input {
+  width: 100%; /* Utiliser toute la largeur */
+  padding: 10px; /* Espacement interne */
+  margin-bottom: 20px; /* Espacement sous le champ */
+  border: 1px solid #ced4da; /* Bordure autour de l'input */
+  border-radius: 5px; /* Coins arrondis */
+}
+
+.close {
+  cursor: pointer;
+  font-size: 24px;
+  color: #aaa; /* Couleur de la croix de fermeture */
+  position: absolute; /* Positionner en absolu pour être à droite */
+  right: 20px; /* Espacement à droite */
+  top: 20px; /* Espacement en haut */
+}
+
+.close:hover {
+  color: #000; /* Couleur de la croix de fermeture au survol */
+}
+
+/* Nouveau style pour le bouton Annuler */
+.btn-secondary {
+  background-color: #dc3545; /* Couleur de fond rouge */
+  border: none; /* Pas de bordure */
+  color: white; /* Couleur du texte blanc */
+  margin-right: 5px; /* Espacement entre les boutons */
+}
+
+.btn-secondary:hover {
+  background-color: #c82333; /* Couleur de fond au survol */
+}

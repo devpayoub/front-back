@@ -1,0 +1,76 @@
+<app-topbar></app-topbar>
+<app-sidebar></app-sidebar>
+
+<div class="container">
+  <h2>Liste des Postes</h2>
+  
+  <button class="btn btn-success" (click)="openPostModal()">Ajouter un Poste</button>
+
+  <table class="table table-striped table-sm mt-3">
+    <thead>
+      <tr>
+        <th scope="col">Nom de Poste</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let poste of postes">
+        <td>{{ poste.nom }}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openPostModal(poste)">Modifier</button>
+          <button class="btn btn-danger btn-sm" (click)="openDeleteConfirmationModal(poste)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+    {{ errorMessage }}
+  </div>
+
+  <div class="pagination-container flex items-center justify-between py-2 px-4 bg-white shadow-md rounded-lg">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">Previous</button>
+    <span class="text-gray-700">Page {{ currentPage }} sur {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">Next</button>
+  </div>
+</div>
+
+<div *ngIf="isPostModalOpen" class="modal" aria-hidden="false">
+  <div class="modal-content">
+    <span class="close" (click)="closePostModal()" aria-label="Close modal">&times;</span>
+    <h2 *ngIf="selectedPost; else createHeader" class="modal-title">Modifier Poste</h2>
+    <ng-template #createHeader>
+      <h2 class="modal-title">Ajouter Poste</h2>
+    </ng-template>
+    <form (ngSubmit)="savePoste()" #posteForm="ngForm">
+      <label for="nomPoste">Nom du Poste:</label>
+      <input 
+      id="nomPoste" 
+      type="text" 
+      [(ngModel)]="currentPost.nom" 
+      name="nomPoste" 
+      required 
+      placeholder="Entrer le Nom du Poste" 
+      class="modal-input" 
+    />
+  
+    <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+      {{ errorMessage }}
+    </div>
+
+      <button type="submit" class="btn btn-success" [disabled]="!posteForm.valid">Enregistrer</button>
+      <button type="button" class="btn btn-secondary" (click)="closePostModal()">Annuler</button>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="isDeleteConfirmationModalOpen" class="modal" aria-hidden="false">
+  <div class="modal-content">
+    <span class="close" (click)="closeDeleteConfirmationModal()" aria-label="Close modal">&times;</span>
+    <h2>Êtes-vous sûr de vouloir supprimer ce poste ?</h2>
+    <button class="btn btn-danger" (click)="deletePoste()">Oui, Supprimer</button>
+    <button class="btn btn-secondary" (click)="closeDeleteConfirmationModal()">Annuler</button>
+  </div>
+</div>

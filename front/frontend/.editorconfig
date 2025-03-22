@@ -1,0 +1,6 @@
+# Auto convert text files to CRLF on checkout, LF on commit
+* text=auto
+
+# Force specific line endings for specific files
+*.sh text eol=lf
+*.bat text eol=crlf

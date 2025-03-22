@@ -1,0 +1,153 @@
+<app-sidebar></app-sidebar>
+<app-topbar></app-topbar>
+<div class="table-container text-center">
+    <h2>Liste des Missions</h2>
+    <button
+        class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300"
+        (click)="openAddMissionModal()">
+        Ajouter employé par missions
+    </button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CIN</th>
+                <th>Employé</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Destination</th>
+                <!-- <th>Document</th> -->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let mission of displayedMissions">
+                <td>{{ mission?.cin }}</td>
+                <td>{{ mission.employe.nom }}</td>
+                <td>{{ mission?.startDate | date }}</td>
+                <td>{{ mission?.endDate | date }}</td>
+                <td>{{ mission?.destination }}</td>
+                <!-- <td>{{ mission?.document?.idDoc }}</td> -->
+
+                <td>
+                    <button class="btn btn-primary btn-sm" (click)="openEditModal(mission)">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
+                    <button class="btn btn-danger btn-sm" (click)="openDeleteConfirmationModal(mission)">
+                        <i class="fas fa-trash-alt"></i> Supprimer
+                    </button>
+                    
+              
+
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+        <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+            class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+            Précédent
+        </button>
+        <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+        <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages"
+            class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+            Suivant
+        </button>
+    </div>
+</div>
+
+<!-- Modal Ajouter Mission -->
+<div class="modal" [ngClass]="{'open': isAddModalOpen}" *ngIf="isAddModalOpen">
+    <div class="modal-content">
+        <h2>Ajouter une Mission</h2>
+        <form (ngSubmit)="addMission()">
+            <label for="CIN">CIN:</label>
+            <input id="CIN" type="text" [(ngModel)]="newMission.cin" name="cin" required />
+
+            <label for="Destination">Destination:</label>
+            <input id="Destination" type="text" [(ngModel)]="newMission.destination" name="destination" required />
+
+            <label for="StartDate">Date de Début:</label>
+            <input id="StartDate" type="date" [(ngModel)]="newMission.startDate" name="startDate" required />
+
+            <label for="EndDate">Date de Fin:</label>
+            <input id="EndDate" type="date" [(ngModel)]="newMission.endDate" name="endDate" required />
+
+            <!-- Sélection de l'employé -->
+            <div class="form-group">
+                <label for="editEmployeInput">Employé</label>
+                <select id="editEmployeInput" name="employe" [(ngModel)]="selectedEmployeId" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.prenom }} {{ emp.nom }}</option>
+                </select>
+            </div>
+
+            <!-- Sélection du document -->
+            <div class="form-group">
+                <label for="editDocumentInput">Document</label>
+                <select id="editDocumentInput" name="document" [(ngModel)]="selectedDocumentId" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option *ngFor="let doc of documents" [value]="doc.idDoc">{{ doc.name }}</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit">Enregistrer</button>
+            <button type="button" (click)="closeAddMissionModal()" class="cancel">Annuler</button>
+
+        </form>
+    </div>
+</div>
+
+
+<!-- Modal Modifier Mission -->
+<div class="modal" [ngClass]="{'open': isEditModalOpen}" *ngIf="isEditModalOpen">
+    <div class="modal-content">
+        <h2>Modifier une Mission</h2>
+        <form (ngSubmit)="editMission()">
+            <label for="EditCIN">CIN :</label>
+            <input id="EditCIN" type="text" [(ngModel)]="editMissionData!.cin" name="cin" required />
+
+            <label for="EditDestination">Destination :</label>
+            <input id="EditDestination" type="text" [(ngModel)]="editMissionData!.destination" name="destination"
+                required />
+
+            <label for="StartDate">Date de Début:</label>
+            <input id="StartDate" type="date" [(ngModel)]="editMissionData!.startDate" name="startDate" required />
+
+            <label for="EndDate">Date de Fin:</label>
+            <input id="EndDate" type="date" [(ngModel)]="editMissionData!.endDate" name="endDate" required />
+
+            <div class="form-group">
+                <label for="editEmployeInput">Employé</label>
+                <select id="editEmployeInput" [(ngModel)]="editMissionData!.employe!.id" name="employe" required>
+                    <option *ngFor="let emp of employees" [value]="emp.id">{{ emp.prenom }} {{ emp.nom }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="editDocumentInput">Document</label>
+                <select id="editDocumentInput" [(ngModel)]="editMissionData!.document!.idDoc" name="document" required>
+                    <option *ngFor="let doc of documents" [value]="doc.idDoc">{{ doc.name }}</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit">Enregistrer</button>
+            <button type="button" (click)="closeEditModal()" class="cancel">Annuler</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Confirmation Suppression -->
+<div *ngIf="isDeleteConfirmationModalOpen" class="modal">
+    <div class="modal-content">
+        <h3>Êtes-vous sûr de vouloir supprimer cette mission ?</h3>
+        <button class="btn btn-danger" (click)="deleteMission()">Confirmer la suppression</button>
+        <button class="btn btn-secondary" (click)="closeDeleteConfirmationModal()">Annuler</button>
+    </div>
+</div>

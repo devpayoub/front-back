@@ -1,0 +1,464 @@
+.custom-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  background-color: black; // Blue background color for the toolbar
+  color: #17a2b8;
+  height: 64px;
+  // border-bottom: 3px solid #0d47a1; // A darker blue line at the bottom for contrast
+  
+  .mat-h2 {
+      font-weight: bold;
+      font-size: 24px;
+  }
+
+  .button-container {
+      margin-left: auto;
+  }
+}
+.error-message {
+color: red; /* Change la couleur du texte en rouge */
+}
+
+.custom-button {
+  background-color:  #17a2b8; // Yellow button background
+  color: white; // Black text color for contrast
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+      // background-color: #fbc02d; // Darker yellow on hover
+      transform: translateY(-2px); // Slight lift effect on hover
+  }
+}
+
+/* Container Styling */
+.container {
+  margin-top: 20px;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  padding-bottom: 20px; /* Space for scrollbar */
+  height: 100vh; /* Full height of the viewport */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Row Styling */
+#liste {
+  display: flex;
+  flex-direction: row;
+  gap: 20px; /* Spacing between cards */
+  align-items: flex-start; /* Align cards to the top */
+  margin-bottom: auto; /* Pushes content up */
+  padding: 20px 0; /* Optional padding around the row */
+}
+
+/* Card Styling */
+.card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease;
+  min-width: 100mm; /* Minimum width of 150 mm */
+  max-width: 250px; /* Maximum width for the card */
+  flex: 0 0 auto; /* Prevent card from shrinking and allow for horizontal scrolling */
+}
+
+/* Card Header Styling */
+.card-header {
+  background-color: black; /* Primary color */
+  color: #fff;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  border-radius: 8px 8px 0 0;
+}
+/* Card Title Styling */
+.card-title {
+  font-weight: bold;
+  font-size: 20px; /* Larger font size for better visibility */
+}
+
+/* Button Container Styling */
+.button-container {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+/* Button Styling */
+.btn-add {
+  background-color: #17a2b8; /* Info color */
+  border: none;
+  color: #fff;
+  font-size: 24px; /* Larger font size for better visibility */
+  width: 30px; /* Increased width */
+  height: 30px; /* Increased height */
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn-add:hover {
+  background-color: #138496; /* Darker shade for hover effect */
+}
+
+/* Card Body Styling */
+.card-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alignement du contenu au début du conteneur */
+  justify-content: flex-start; /* Contenu aligné en haut */
+  flex: 1;
+  width: 100%;
+  min-height: 80px; /* Hauteur minimale pour le card body */
+  max-height: 500px; /* Vous pouvez ajuster cette limite en fonction de vos besoins */
+  overflow-y: auto; /* Active le défilement si le contenu dépasse la hauteur max */
+}
+
+/* Paragraph Styling */
+.card-body p {
+  margin: 0;
+  font-size: 16px;
+  flex-grow: 1; /* Allow the p element to take up available space */
+}
+/* Task Button Styling */
+.tasks-container {
+  flex-grow: 1;
+  overflow-y: auto; /* Permet le défilement vertical si nécessaire */
+  width: 100%; /* S'assure que le conteneur des tâches occupe toute la largeur */
+  padding: 10px; /* Ajoute un padding pour les tâches */
+}
+
+.task {
+  background-color: #f8f9fa; /* Couleur de fond pour la tâche */
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  transition: all 0.3s ease;
+  width: calc(100% + 20px); /* Permet à la tâche de dépasser légèrement la carte */
+  left: -10px; /* Aligne la tâche pour qu'elle dépasse des deux côtés */
+  .task-buttons {
+      display: flex;
+      gap: 10px;
+  }
+}
+
+.edit-task{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #17a2b8;
+  border: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none !important;
+}
+
+.edit-svgIcon {
+  width: 17px;
+  transition-duration: 0.3s;
+}
+
+.edit-svgIcon path {
+  fill: white;
+}
+
+.edit-button:hover {
+  width: 120px;
+  border-radius: 50px;
+  transition-duration: 0.3s;
+  background-color: rgb(255, 69, 69);
+  align-items: center;
+}
+
+.edit-task:hover .edit-svgIcon {
+  width: 20px;
+  transition-duration: 0.3s;
+  transform: translateY(60%);
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+.edit-task::before {
+  display: none;
+  content: "Edit";
+  color: white;
+  transition-duration: 0.3s;
+  font-size: 2px;
+}
+
+.edit-task:hover::before {
+  display: block;
+  padding-right: 10px;
+  font-size: 13px;
+  opacity: 1;
+  transform: translateY(0px);
+  transition-duration: 0.3s;
+}
+/* From Uiverse.io by vinodjangid07 */ 
+.delete-task {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #17a2b8;
+  border: none;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+  gap: 2px;
+}
+
+.svgIcon {
+  width: 12px;
+  transition-duration: 0.3s;
+}
+
+.svgIcon path {
+  fill: white;
+}
+
+.delete-task:hover {
+  transition-duration: 0.3s;
+  background-color: rgb(255, 69, 69);
+  align-items: center;
+  gap: 0;
+}
+
+.bin-top {
+  transform-origin: bottom right;
+}
+.delete-task:hover .bin-top {
+  transition-duration: 0.5s;
+  transform: rotate(160deg);
+}
+.modal {
+  display: block; /* Show the modal */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  position: relative;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    
+    &:hover,
+    &:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 10px;
+    }
+
+    input[type="email"] {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #45a049;
+      }
+    }
+  }
+}
+.modal {
+  display: block; /* Show the modal */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  position: relative;
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    
+    &:hover,
+    &:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      margin-bottom: 10px;
+    }
+
+    input[type="email"] {
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #45a049;
+      }
+    }
+  }
+
+  /* Design for Invited Members */
+  h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      background-color: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #f1f1f1;
+      }
+
+      .member-email {
+        font-size: 16px;
+        color: #333;
+      }
+
+      .remove-button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 6px 12px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #c0392b;
+        }
+      }
+    }
+  }
+}

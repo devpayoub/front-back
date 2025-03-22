@@ -1,0 +1,169 @@
+<div class="table-container text-center">
+  <h2>Liste des Congés</h2>
+  <button
+    class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300"
+    (click)="openAddModal()">
+    Ajouter Congé
+  </button>
+
+  <!-- Table des congés -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>CIN</th>
+        <th>employes</th>
+        <th>Date de début</th>
+        <th>Date de fin</th>
+        <th>Motif</th>
+        <th>Type de Congé</th>
+
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let holiday of displayedHolidays">
+        <td>{{ holiday.cin }}</td>
+        <td>{{ holiday.employe.nom }}</td>
+        <td>{{ holiday.dateDebut | date:'dd/MM/yyyy' }}</td>
+        <td>{{ holiday.dateFin | date:'dd/MM/yyyy' }}</td>
+        <td>{{ holiday.motif }}</td>
+        <td>{{ holiday.typeConge }}</td>
+        <td>{{ holiday.statut }}</td> <!-- Ajout de la colonne statut -->
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="editHoliday(holiday)">
+            <i class="fas fa-edit"></i> Modifier
+          </button>
+        <button class="btn btn-danger btn-sm" (click)="deleteHoliday(holiday)">
+            <i class="fas fa-trash-alt"></i> Supprimer
+          </button>
+        
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+      Précédent
+    </button>
+    <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+      Suivant
+    </button>
+  </div>
+</div>
+
+<!-- Modal Ajouter Congé -->
+<div *ngIf="isAddModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="openAddModal()">&times;</span>
+    <h2 class="modal-title">Ajouter un Congé</h2>
+    <label for="cin">CIN:</label>
+    <input id="cin" type="text" [(ngModel)]="newHoliday.cin" placeholder="Entrer le CIN" class="modal-input"
+      (ngModelChange)="validateCin()" /> <!-- Ajout de l'événement ngModelChange -->
+
+    <!-- Message d'erreur si le CIN est invalide -->
+    <p *ngIf="cinError" class="error-message">Le CIN doit contenir exactement 8 chiffres.</p>
+
+  
+    <div>
+      <label for="employe">Employé</label>
+      <select id="employe" [(ngModel)]="newHoliday.employe.id" name="employe" required>
+          <option value="" disabled selected>Sélectionnez un employé</option>
+          <option *ngFor="let employe of employes" [value]="employe.id">{{ employe.nom }}</option>
+      </select>
+  </div>
+
+    <label for="dateDebut">Date de début:</label>
+    <input id="dateDebut" type="date" [(ngModel)]="newHoliday.dateDebut" class="modal-input" />
+
+    <label for="dateFin">Date de fin:</label>
+    <input id="dateFin" type="date" [(ngModel)]="newHoliday.dateFin" class="modal-input" />
+
+    <label for="motif">Motif:</label>
+    <input id="motif" type="text" [(ngModel)]="newHoliday.motif" placeholder="Entrer le motif" class="modal-input" />
+
+    <label for="typeConge">Type de Congé:</label>
+    <input id="typeConge" type="text" [(ngModel)]="newHoliday.typeConge" placeholder="Entrer le type de congé"
+      class="modal-input" />
+
+
+    <label for="statut">Statut:</label>
+    <select id="statut" [(ngModel)]="newHoliday.statut" class="modal-input">
+      <option value="" disabled selected>Choisir un statut</option>
+      <option value="en cours">En cours</option>
+      <option value="approuvé">Approuvé</option>
+      <option value="valider">Valider</option>
+    </select>
+    <button class="btn btn-success" (click)="saveHoliday()">Enregistrer</button>
+    <button class="btn btn-secondary" (click)="openAddModal()">Annuler</button>
+  </div>
+</div>
+<!-- Modal Modifier Congé -->
+<div *ngIf="isEditModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeEditModal()">&times;</span>
+    <h2 class="modal-title">Modifier un Congé</h2>
+
+    <label for="cin">CIN:</label>
+    <input id="cin" type="text" [(ngModel)]="selectedHoliday.cin" placeholder="Entrer le CIN" class="modal-input"
+      (ngModelChange)="validateCin()" />
+
+    <!-- Message d'erreur si le CIN est invalide -->
+    <p *ngIf="cinError" class="error-message">Le CIN doit contenir exactement 8 chiffres.</p>
+
+
+  
+    <div class="form-group">
+      <label for="editEmployeInput">Employé</label>
+      <select id="editEmployeInput" [(ngModel)]="selectedHoliday!.employe!.id" name="employe" required>
+          <option *ngFor="let emp of employes" [value]="emp.id">{{ emp.prenom }} {{ emp.nom }}</option>
+      </select>
+  </div>
+    <label for="dateDebut">Date de début:</label>
+    <input id="dateDebut" type="date" [(ngModel)]="selectedHoliday.dateDebut" class="modal-input" />
+
+    <label for="dateFin">Date de fin:</label>
+    <input id="dateFin" type="date" [(ngModel)]="selectedHoliday.dateFin" class="modal-input" />
+
+    <label for="motif">Motif:</label>
+    <input id="motif" type="text" [(ngModel)]="selectedHoliday.motif" placeholder="Entrer le motif"
+      class="modal-input" />
+
+    <label for="typeConge">Type de Congé:</label>
+    <input id="typeConge" type="text" [(ngModel)]="selectedHoliday.typeConge" placeholder="Entrer le type de congé"
+      class="modal-input" />
+
+  
+      <label for="statut">Statut:</label>
+      <select id="statut" [(ngModel)]="selectedHoliday.statut" class="modal-input" required>
+          <option value="" disabled>Choisir un statut</option>
+          <option value="en cours">En cours</option>
+          <option value="approuvé">Approuvé</option>
+          <option value="valider">Valider</option>
+      </select>
+      
+    
+    <button class="btn btn-success" (click)="updateHoliday()">Mettre à jour</button>
+    <button class="btn btn-secondary" (click)="closeEditModal()">Annuler</button>
+  </div>
+</div>
+ 
+
+<!-- Modal Confirmation Suppression -->
+<div *ngIf="isDeleteConfirmationModalOpen" class="modal">
+  <div class="modal-content">
+    <h3>Êtes-vous sûr de vouloir supprimer ce congé ?</h3>
+    <button class="btn btn-danger" (click)="confirmDeleteHoliday()">Confirmer</button>
+    <button class="btn btn-secondary" (click)="closeDeleteConfirmationModal()">Annuler</button>
+  </div>
+</div>

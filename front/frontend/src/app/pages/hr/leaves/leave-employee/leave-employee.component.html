@@ -1,0 +1,150 @@
+<div class="table-container text-center">
+    <h2>Liste des Absences</h2>
+    <button
+      class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300"
+      (click)="openAddModal()">
+      Ajouter Absence
+    </button>
+  
+    <!-- Table des absences -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>CIN</th>
+          <th>Employé</th>
+          <th>Date d'absence</th>
+          <th>Motif</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let absence of absences">
+          <td>{{ absence.cin }}</td>
+          <td>{{ absence.employe.nom }}</td>
+          <td>{{ absence.dateAbsence | date }}</td>
+          <td>{{ absence.motif }}</td>
+          <td>
+            <button class="btn btn-primary btn-sm" (click)="openEditModal(absence)">
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            
+            <button class="btn btn-danger btn-sm" (click)="deleteAbsence(absence.id)">
+              <i class="fas fa-trash-alt"></i> Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Pagination -->
+    <div class="pagination-container">
+      <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+        class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+        Précédent
+      </button>
+      <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+      <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages"
+        class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+        Suivant
+      </button>
+    </div>
+  </div>
+  <div class="modal" *ngIf="isModalOpen" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <h3>Ajouter Absence</h3>
+        <form (ngSubmit)="addAbsence()" #absenceForm="ngForm"> 
+            <div>
+                <label for="cin">CIN</label>
+                <input 
+                    type="text" 
+                    id="cin" 
+                    [(ngModel)]="newAbsence.cin" 
+                    name="cin" 
+                    required 
+                    minlength="8" 
+                    maxlength="8" 
+                    pattern="^[0-9]*$" 
+                    #cinInput="ngModel" (ngModelChange)="validateCin()"
+                />
+                <div *ngIf="cinError" class="error-message">Le CIN doit comporter exactement 8 chiffres.</div>
+            </div>
+            
+            <div>
+                <label for="employe">Employé</label>
+                <select id="employe" [(ngModel)]="newAbsence.employe.id" name="employe" required>
+                    <option value="" disabled selected>Sélectionnez un employé</option>
+                    <option *ngFor="let employe of employes" [value]="employe.id">{{ employe.nom }}</option>
+                </select>
+            </div>
+            <div>
+                <label for="dateAbsence">Date d'absence</label>
+                <input type="date" id="dateAbsence" [(ngModel)]="newAbsence.dateAbsence" name="dateAbsence" required />
+            </div>
+            <div>
+                <label for="motif">Motif</label>
+                <input type="text" id="motif" [(ngModel)]="newAbsence.motif" name="motif" required />
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="absenceForm.invalid">Ajouter</button>
+            <button type="button" class="btn btn-danger" (click)="closeModal()">Annuler</button>
+        </form>
+    </div>
+</div>
+<!-- Modal de modification -->
+<div class="modal" *ngIf="isEditModalOpen" (click)="closeEditModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closeEditModal()">&times;</span>
+      <h3>Modifier Absence</h3>
+      <form (ngSubmit)="updateAbsence()" #editForm="ngForm"> 
+          <div>
+              <label for="cin">CIN</label>
+              <input 
+                  type="text" 
+                  id="cin" 
+                  [(ngModel)]="newAbsence.cin" 
+                  name="cin" 
+                  required 
+                  minlength="8" 
+                  maxlength="8" 
+                  pattern="^[0-9]*$"
+                  #cinInput="ngModel" (ngModelChange)="validateCin()"
+              />
+              <div *ngIf="cinError" class="error-message">Le CIN doit comporter exactement 8 chiffres.</div>
+          </div>
+          
+          <div>
+              <label for="employe">Employé</label>
+              <select id="employe" [(ngModel)]="newAbsence.employe.id" name="employe" required>
+                  <option value="" disabled selected>Sélectionnez un employé</option>
+                  <option *ngFor="let employe of employes" [value]="employe.id">{{ employe.nom }}</option>
+              </select>
+          </div>
+          <div>
+              <label for="dateAbsence">Date d'absence</label>
+              <input type="date" id="dateAbsence" [(ngModel)]="newAbsence.dateAbsence" name="dateAbsence" required />
+          </div>
+          <div>
+              <label for="motif">Motif</label>
+              <input type="text" id="motif" [(ngModel)]="newAbsence.motif" name="motif" required />
+          </div>
+          <button type="submit" class="btn btn-primary"(click)="updateAbsence()" [disabled]="editForm.invalid">Modifier</button>
+          <button type="button" class="btn btn-danger" (click)="closeEditModal()">Annuler</button>
+      </form>
+  </div>
+</div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal" *ngIf="isConfirmDeleteModalOpen" (click)="closeConfirmDeleteModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closeConfirmDeleteModal()">&times;</span>
+      <h3>Confirmer la suppression</h3>
+      <p>Êtes-vous sûr de vouloir supprimer cette absence ?</p>
+      <button class="btn btn-danger" (click)="confirmDelete()">Confirmer</button>
+      <button class="btn btn-secondary" (click)="closeConfirmDeleteModal()">Annuler</button>
+  </div>
+</div>

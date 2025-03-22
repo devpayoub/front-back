@@ -1,0 +1,224 @@
+// Variables de couleur
+$primary-color: #4e73df; // Bleu doux
+$secondary-color: #858796; // Gris moderne
+$danger-color: #e74a3b; // Rouge doux
+$light-color: black; // Blanc léger
+$border-color: #dee2e6; // Gris léger
+$modal-bg-color: rgba(0, 0, 0, 0.5); // Fond modal sombre
+
+// Général
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+}
+
+.container {
+  max-width: 90%;
+  margin: 4rem auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h2 {
+  color: $primary-color;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+// Tableau
+table {
+  width: 80%;
+  max-width: 1000px;
+  margin: 2rem 0;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+
+  th,
+  td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border: 1px solid $border-color;
+  }
+
+  thead {
+    background-color: lighten($primary-color, 35%);
+    color: white;
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: lighten($primary-color, 55%);
+        color:black;
+      }
+    }
+  }
+}
+
+// Boutons
+button {
+  &.btn-primary {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    color: white;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &.btn-secondary {
+    background-color: $secondary-color;
+    border-color: $secondary-color;
+    color: black;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+
+  &.btn-danger {
+    background-color: $danger-color;
+    border-color: $danger-color;
+    color: white;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: darken($danger-color, 10%);
+    }
+  }
+
+  &.btn-blue {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    color: white;
+    border-radius: 6px;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+// Modals
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $modal-bg-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 450px;
+  text-align: center;
+  position: relative;
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: $secondary-color;
+
+    &:hover {
+      color: $danger-color;
+    }
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: $primary-color;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+    }
+  }
+
+  .btn-blue,
+  .btn-secondary {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+// Pagination
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.pagination-button {
+  background-color: $light-color;
+  border: 1px solid $border-color;
+  color: $primary-color;
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+  border-radius: 6px;
+  margin: 0 0.5rem;
+
+  &:hover {
+    background-color: lighten($primary-color, 50%);
+    color: white;
+  }
+
+  &:disabled {
+    background-color: lighten($primary-color, 90%);
+    cursor: not-allowed;
+  }
+}
+
+// Sidebar et Topbar
+app-sidebar, app-topbar {
+  z-index: 200;
+}
+
+.container {
+  padding-top: 5rem; // Ajuste pour le topbar
+  margin-left: 240px; // Ajuste pour la sidebar
+}

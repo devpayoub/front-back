@@ -1,0 +1,68 @@
+<div class="table-container text-center">
+  <h2>Liste des documents</h2>
+  <button
+    class="transition ease-in-out delay-150 bg-blue-500 hover:-translate-y-1 hover:scale-110 hover:bg-indigo-500 duration-300"
+    (click)="openAddModal()">
+    Ajouter document
+  </button>
+  
+  <!-- Table des documents -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Nom</th>
+      
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let document of documents">
+        <td>{{ document.name }}</td>
+        <td>
+          <button class="btn btn-danger btn-sm">
+            <i class="fas fa-trash-alt"></i> Supprimer
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="errorMessage" class="alert alert-danger mt-2">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination-container">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+      Précédent
+    </button>
+    <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages"
+      class="pagination-button text-gray-500 hover:text-gray-700 disabled:cursor-not-allowed disabled:text-gray-300">
+      Suivant
+    </button>
+  </div>
+</div>
+
+<!-- Modal pour ajouter un document -->
+<div class="modal" [ngClass]="{'show': isModalOpen}" (click)="closeModal($event)">
+  <div class="modal-dialog" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter un document</h5>
+        <button type="button" class="close" (click)="closeModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <form >
+          <div class="mb-3">
+            <label for="documentFile" class="form-label">Sélectionnez un fichier</label>
+            <input type="file" id="documentFile" class="form-control" (change)="onFileSelected($event)" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
